@@ -1,6 +1,5 @@
 package ir.pearly.assistant;
 
-
 import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -853,7 +852,141 @@ public static ProgressDialog getProgressDialog(){
     }
 
 
-    public static void callsub(Context c, String sunname) {
+    public static void callsub( Class class1, String sunname) {
+
+
+        Object dog = null; // invoke empty constructor
+        try {
+            Method setNameMethod = null;
+
+            try {
+                setNameMethod = class1.getMethod(sunname, (Class<?>[]) null);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+            if (setNameMethod == null) {
+            } else {
+                setNameMethod.invoke(class1.newInstance()); // pass arg
+            }
+
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public static void callsub(final Class class1, final String sunname, long delay) {
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    Method setNameMethod = null;
+                    try {
+
+                        setNameMethod = class1.getMethod(sunname, (Class<?>[]) null);
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (setNameMethod == null) {
+                    } else {
+
+                        setNameMethod.invoke(class1.newInstance()); // pass arg
+                    }
+
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, delay);
+
+    }
+
+    public static void callsub(final Class class1, final String sunname, long delay, final Object arg) {
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    Method setNameMethod = null;
+                    try {
+                        setNameMethod = class1.getMethod(sunname, Object.class);
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (setNameMethod == null) {
+                    } else {
+                        setNameMethod.invoke(class1.newInstance(), arg); // pass arg
+                    }
+
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, delay);
+
+    }
+
+    public static void callsub(final Class class1, final String sunname, long delay, final Object arg1, final Object arg2) {
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    Method setNameMethod = null;
+                    try {
+                        setNameMethod = class1.getMethod(sunname, Object.class, Object.class);
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (setNameMethod == null) {
+                    } else {
+                        setNameMethod.invoke(class1.newInstance(), arg1, arg2); // pass arg
+                    }
+
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, delay);
+
+
+    }
+
+    public static void callsub( Context c, String sunname) {
 
 
         Object dog = null; // invoke empty constructor
@@ -911,7 +1044,6 @@ public static ProgressDialog getProgressDialog(){
         }, delay);
 
     }
-
 
     public static void callsub(final Context c, final String sunname, long delay, final Object arg) {
 
@@ -1060,7 +1192,7 @@ public static ProgressDialog getProgressDialog(){
             if (on)
                 activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             else
-                activity.getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
         public static String versionsdk() {
@@ -1159,4 +1291,6 @@ public static ProgressDialog getProgressDialog(){
     }
 
 }
+
+
 
