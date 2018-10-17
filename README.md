@@ -13,5 +13,5 @@ Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 
 	dependencies {
-	        implementation 'com.github.golroz5950:assistant:Tag'
+	       implementation 'com.github.golroz5950:assistant:Version_1.0.1'
 	}
