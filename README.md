@@ -1,4 +1,4 @@
-# assistant
+# assistant create by Hadi Alavi
 
 Step 1. Add the JitPack repository to your build file
 
