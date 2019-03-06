@@ -31,7 +31,7 @@ public class AlaviHttp {
         public String subname = null, response = "", method = "";
         boolean wait;
         public boolean success;
-        HttpURLConnection connection = null;
+        public HttpURLConnection connection = null;
 
         public GetStringRequest(Context context, String subname, AlaviHttpMethod method) {
             this.context = context;
@@ -138,7 +138,7 @@ public class AlaviHttp {
         boolean wait;
         public boolean success;
         private ProgressDialog progressDialog;
-        private HttpURLConnection connection = null;
+        public HttpURLConnection connection = null;
 
         public SendJsonRaw(Context context, String subname) {
             this.context = context;
@@ -292,7 +292,7 @@ public class AlaviHttp {
         int downloaded = 0;
         int fileLength = 0;
         public boolean success;
-        private HttpURLConnection connection = null;
+        public HttpURLConnection connection = null;
 
         public void startwait() {
             wait = true;
