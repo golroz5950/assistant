@@ -29,9 +29,11 @@ public class AlaviHttp {
     public static class GetStringRequest extends AsyncTask<String, Integer, String> {
         public Context context;
         public String subname = null, response = "", method = "";
-        boolean wait;
         public boolean success;
         public HttpURLConnection connection = null;
+        public int connectTimeout = 0;
+        public int readTimeout = 0;
+        boolean wait;
 
         public GetStringRequest(Context context, String subname, AlaviHttpMethod method) {
             this.context = context;
@@ -57,6 +59,12 @@ public class AlaviHttp {
                 URL url = new URL(urls[0]);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod(method);
+
+                if (connectTimeout > 0)
+                    connection.setConnectTimeout(connectTimeout);
+                if (readTimeout > 0)
+                    connection.setReadTimeout(readTimeout);
+                
                 if (method == AlaviHttpMethod.GET.toString()) {
                     connection.connect();
                 } else {
@@ -104,8 +112,8 @@ public class AlaviHttp {
             AlaviUtill.waitstop();
         }
 
-        public boolean isWait(){
-            return  wait;
+        public boolean isWait() {
+            return wait;
         }
 
         public void cancel() {
@@ -133,12 +141,14 @@ public class AlaviHttp {
 
     public static class SendJsonRaw extends AsyncTask<String, Integer, String> {
         public Context context;
-        public boolean upload_progress=false;
-         public String subname = null, response = "";
-        boolean wait;
+        public boolean upload_progress = false;
+        public String subname = null, response = "";
         public boolean success;
-        private ProgressDialog progressDialog;
         public HttpURLConnection connection = null;
+        public int connectTimeout = 0;
+        public int readTimeout = 0;
+        boolean wait;
+        private ProgressDialog progressDialog;
 
         public SendJsonRaw(Context context, String subname) {
             this.context = context;
@@ -155,8 +165,8 @@ public class AlaviHttp {
         public SendJsonRaw(ProgressDialog progressDialog, boolean upload_progress) {
             wait = true;
             subname = "";
-            this.progressDialog=progressDialog;
-            this.upload_progress=upload_progress;
+            this.progressDialog = progressDialog;
+            this.upload_progress = upload_progress;
 
         }
 
@@ -177,7 +187,7 @@ public class AlaviHttp {
             InputStream is = null;
             try {
                 URL url = new URL(urls[0]);
-                if (upload_progress&&progressDialog!=null) {
+                if (upload_progress && progressDialog != null) {
                     progressDialog.setProgress(0);
                 }
                 connection = (HttpURLConnection) url.openConnection();
@@ -190,24 +200,29 @@ public class AlaviHttp {
                 connection.setDoOutput(true);
 
                 byte bufInput[] = urls[1].getBytes("UTF-8");
-                int bytesRead = 0,totalSize=bufInput.length,readLength=1024;
+                int bytesRead = 0, totalSize = bufInput.length, readLength = 1024;
 
 
                 connection.setFixedLengthStreamingMode(totalSize);
+                if (connectTimeout > 0)
+                    connection.setConnectTimeout(connectTimeout);
+                if (readTimeout > 0)
+                    connection.setReadTimeout(readTimeout);
+
                 connection.connect();
                 DataOutputStream dataoutput = new DataOutputStream(connection.getOutputStream());
 
 
-
-                while (bytesRead<totalSize) {
+                while (bytesRead < totalSize) {
                     // write output
-                    if(totalSize-bytesRead<readLength)readLength=totalSize-bytesRead;
+                    if (totalSize - bytesRead < readLength) readLength = totalSize - bytesRead;
                     dataoutput.write(bufInput, bytesRead, readLength);
                     dataoutput.flush();
-                    bytesRead=bytesRead+readLength;
-                    if (upload_progress&&progressDialog!=null){
-                    publishProgress((bytesRead*100)/(totalSize));
-                    Thread.sleep(25);}
+                    bytesRead = bytesRead + readLength;
+                    if (upload_progress && progressDialog != null) {
+                        publishProgress((bytesRead * 100) / (totalSize));
+                        Thread.sleep(25);
+                    }
 
                 }
 
@@ -224,7 +239,6 @@ public class AlaviHttp {
                         is), 8);
                 StringBuilder sb = new StringBuilder();
                 String line = null;
-
 
 
                 while ((line = reader.readLine()) != null) {
@@ -255,8 +269,9 @@ public class AlaviHttp {
             wait = false;
             AlaviUtill.waitstop();
         }
-        public boolean isWait(){
-            return  wait;
+
+        public boolean isWait() {
+            return wait;
         }
 
         public void cancel() {
@@ -283,27 +298,18 @@ public class AlaviHttp {
     }
 
     public static class DownloadFileWithResume extends AsyncTask<String, Integer, String> {
-        boolean wait;
         public Context context;
         public String subname = null, response = "";
         public ProgressBar progressBar;
         public String filename = "";
         public String dir = "";
-        int downloaded = 0;
-        int fileLength = 0;
         public boolean success;
         public HttpURLConnection connection = null;
-
-        public void startwait() {
-            wait = true;
-            AlaviUtill.waitstart();
-        }
-
-        public void cancel() {
-            this.cancel(true);
-            connection.disconnect();
-            // TODO try close input stream
-        }
+        public int connectTimeout = 0;
+        public int readTimeout = 0;
+        boolean wait;
+        int downloaded = 0;
+        int fileLength = 0;
 
         public DownloadFileWithResume(Context context, String subname, ProgressBar progressBar, String dir, String filename) {
             this.context = context;
@@ -319,6 +325,17 @@ public class AlaviHttp {
             this.progressBar = progressBar;
             this.filename = filename;
             this.dir = dir;
+        }
+
+        public void startwait() {
+            wait = true;
+            AlaviUtill.waitstart();
+        }
+
+        public void cancel() {
+            this.cancel(true);
+            connection.disconnect();
+            // TODO try close input stream
         }
 
         @Override
@@ -361,6 +378,10 @@ public class AlaviHttp {
                 connection = (HttpURLConnection) url.openConnection();
 
                 connection.setRequestMethod("HEAD");
+                if (connectTimeout > 0)
+                    connection.setConnectTimeout(connectTimeout);
+                if (readTimeout > 0)
+                    connection.setReadTimeout(readTimeout);
                 connection.connect();
                 if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     fileLength = connection.getContentLength();
