@@ -68,7 +68,13 @@ public class AlaviGps implements LocationListener {
 
     }
 
-    private void showSettingsAlert() {
+    public boolean isEnable(){
+        CheckGpsStatus();
+        return GpsEnable;
+    }
+
+
+    public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
         // Setting DialogHelp Title
@@ -90,6 +96,38 @@ public class AlaviGps implements LocationListener {
 
         // on pressing cancel button
         alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
+    public void showSettingsAlert(String Title,String Message,String PositiveButton,String CancelButton) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+
+        // Setting DialogHelp Title
+        alertDialog.setTitle(Title);
+
+        // Setting DialogHelp Message
+        alertDialog
+                .setMessage(Message);
+
+        // On pressing Settings button
+        alertDialog.setPositiveButton(PositiveButton,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(
+                                Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        context.startActivity(intent);
+                    }
+                });
+
+        // on pressing cancel button
+        alertDialog.setNegativeButton(CancelButton,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
