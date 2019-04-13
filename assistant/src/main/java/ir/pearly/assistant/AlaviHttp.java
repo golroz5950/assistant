@@ -64,7 +64,7 @@ public class AlaviHttp {
                     connection.setConnectTimeout(connectTimeout);
                 if (readTimeout > 0)
                     connection.setReadTimeout(readTimeout);
-                
+
                 if (method == AlaviHttpMethod.GET.toString()) {
                     connection.connect();
                 } else {
@@ -144,6 +144,7 @@ public class AlaviHttp {
         public boolean upload_progress = false;
         public String subname = null, response = "";
         public boolean success;
+        public String authorization;
         public HttpURLConnection connection = null;
         public int connectTimeout = 0;
         public int readTimeout = 0;
@@ -191,8 +192,10 @@ public class AlaviHttp {
                     progressDialog.setProgress(0);
                 }
                 connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("POST");                                                                                                      //Way of submitting data(e.g. GET, POST)
-                connection.setRequestProperty("Content-Type", "application/json");                   //Setting content type-  JSON
+                connection.setRequestMethod("POST");   //Way of submitting data(e.g. GET, POST)
+                if(authorization!=null && authorization.trim().length()>1)
+                    connection.setRequestProperty("Authorization", authorization);
+                connection.setRequestProperty("Content-Type", "application/json"); //Setting content type-  JSON
 
 //Setting length of the request body
                 connection.setRequestProperty("Content-Length", Integer.toString(urls[1].getBytes().length));
