@@ -1,5 +1,6 @@
 package ir.pearly.assistant;
 
+
 import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -780,7 +781,7 @@ public static ProgressDialog getProgressDialog(){
 
     public static void hide_progressdialog() {
         if (show_dialog) {
-            dialog.hide();
+            dialog.dismiss();
             show_dialog = false;
         }
 
