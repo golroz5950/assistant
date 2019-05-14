@@ -187,6 +187,7 @@ public class AlaviUtill {
                     connection = null;
                     connection = (HttpURLConnection) url1.openConnection();
                     connection.setRequestMethod("HEAD");
+                    connection.setConnectTimeout(5000);
                     connection.connect();
 
                     conect_internet = true;
