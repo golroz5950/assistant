@@ -474,8 +474,12 @@ public class AlaviUtill {
         activity.startActivity(Intent.createChooser(intent, title));
     }
 
-    public static List<Integer> inputMultiList(final Context context, List item,boolean[] checkedItems, Object title, String Positive, String Negative, boolean celable,Integer style_id) {
+    public static List<Integer> inputMultiList(final Context context, List item, final boolean[] checkedItems, Object title, String Positive, String Negative, boolean celable, Integer style_id) {
         final List<Integer> mSelectedItems = new ArrayList<Integer>();
+        if(checkedItems!=null)
+            for(int i=0;i<checkedItems.length;i++)
+                if(checkedItems[i])
+                    mSelectedItems.add(i);
 
         android.support.v7.app.AlertDialog.Builder builder;
         if(style_id!=null)
@@ -495,6 +499,10 @@ public class AlaviUtill {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mSelectedItems.clear();
+                if(checkedItems!=null)
+                    for(int i=0;i<checkedItems.length;i++)
+                        if(checkedItems[i])
+                            mSelectedItems.add(i);
                 waitstop();
             }
         });
@@ -512,6 +520,10 @@ public class AlaviUtill {
             @Override
             public void onCancel(DialogInterface dialog) {
                 mSelectedItems.clear();
+                if(checkedItems!=null)
+                    for(int i=0;i<checkedItems.length;i++)
+                        if(checkedItems[i])
+                            mSelectedItems.add(i);
                 waitstop();
             }
         });
