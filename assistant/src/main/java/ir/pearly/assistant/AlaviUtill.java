@@ -474,7 +474,7 @@ public class AlaviUtill {
         activity.startActivity(Intent.createChooser(intent, title));
     }
 
-    public static List<Integer> inputMultiList(final Context context, List item, Object title, String Positive, String Negative, boolean celable,Integer style_id) {
+    public static List<Integer> inputMultiList(final Context context, List item,boolean[] checkedItems, Object title, String Positive, String Negative, boolean celable,Integer style_id) {
         final List<Integer> mSelectedItems = new ArrayList<Integer>();
 
         android.support.v7.app.AlertDialog.Builder builder;
@@ -515,7 +515,7 @@ public class AlaviUtill {
                 waitstop();
             }
         });
-        builder.setMultiChoiceItems(items, null, new DialogInterface.OnMultiChoiceClickListener() {
+        builder.setMultiChoiceItems(items,checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                 if (isChecked) {
