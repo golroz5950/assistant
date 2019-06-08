@@ -476,9 +476,11 @@ public class AlaviUtill {
 
     public static List<Integer> inputMultiList(final Context context, List item, final boolean[] checkedItems, Object title, String Positive, String Negative, boolean celable, Integer style_id) {
         final List<Integer> mSelectedItems = new ArrayList<Integer>();
-        if(checkedItems!=null)
-            for(int i=0;i<checkedItems.length;i++)
-                if(checkedItems[i])
+        boolean[] checkedItemsclone=null;
+        if(checkedItems!=null) checkedItemsclone=checkedItems.clone();
+        if(checkedItemsclone!=null)
+            for(int i=0;i<checkedItemsclone.length;i++)
+                if(checkedItemsclone[i])
                     mSelectedItems.add(i);
 
         android.support.v7.app.AlertDialog.Builder builder;
@@ -527,7 +529,7 @@ public class AlaviUtill {
                 waitstop();
             }
         });
-        builder.setMultiChoiceItems(items,checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+        builder.setMultiChoiceItems(items,checkedItemsclone, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                 if (isChecked) {
@@ -544,9 +546,9 @@ public class AlaviUtill {
         waitstart();
 
         Collections.sort(mSelectedItems);
+
         return mSelectedItems;
     }
-
     public static int inputList(final Context context, List item, Object title, int checkItem, boolean celable,Integer style_id) {
         msgbox_resultValue = -1;
         android.support.v7.app.AlertDialog.Builder builder;
