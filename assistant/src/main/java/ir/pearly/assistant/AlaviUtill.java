@@ -1288,20 +1288,22 @@ public static ProgressDialog getProgressDialog(){
 
         public static String get_Time(Long date) {
             Date date1 = new Date(date);
-            android.text.format.DateFormat df = new android.text.format.DateFormat();
-            return (String) df.format("hh:mm:ss", new Date());
+            SimpleDateFormat df = new SimpleDateFormat("kk:mm:ss", Locale.US);
+            return df.format(date1);
         }
 
         public static String get_Date(Long date) {
+
             Date date1 = new Date(date);
-            android.text.format.DateFormat df = new android.text.format.DateFormat();
-            return (String) df.format("yyyy-MM-dd", new Date());
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            return df.format(date1);
         }
 
         public static String get_Date_Time(Long date) {
             Date date1 = new Date(date);
-            android.text.format.DateFormat df = new android.text.format.DateFormat();
-            return (String) df.format("yyyy-MM-dd hh:mm:ss", new Date());
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss", Locale.US);
+            return df.format(date1);
+
         }
 
     }
