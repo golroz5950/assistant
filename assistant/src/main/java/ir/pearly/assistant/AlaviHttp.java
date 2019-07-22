@@ -81,17 +81,16 @@ public class AlaviHttp {
                     is = connection.getErrorStream();
                 }
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(
-                        is, "UTF-8"), 8);
+                ByteArrayOutputStream oas = new ByteArrayOutputStream();
                 StringBuilder sb = new StringBuilder();
-                String line = null;
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line + "\n");
-                }
+                copyStream(is, oas);
+                String t = oas.toString();
+
+
                 is.close();
                 connection.disconnect();
-                String rm = sb.toString();
-                return rm;
+
+                return t;
 
             } catch (Exception e) {
                 Log.d("alavi_log", "doInBackground: " + e.getMessage());
@@ -100,6 +99,20 @@ public class AlaviHttp {
 
 
             return null;
+        }
+
+        private void copyStream(InputStream is, OutputStream os) {
+            final int buffer_size = 1024;
+            try {
+                byte[] bytes = new byte[buffer_size];
+                for (; ; ) {
+                    int count = is.read(bytes, 0, buffer_size);
+                    if (count == -1)
+                        break;
+                    os.write(bytes, 0, count);
+                }
+            } catch (Exception ex) {
+            }
         }
 
         public void startwait() {
@@ -193,7 +206,7 @@ public class AlaviHttp {
                 }
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");   //Way of submitting data(e.g. GET, POST)
-                if(authorization!=null && authorization.trim().length()>1)
+                if (authorization != null && authorization.trim().length() > 1)
                     connection.setRequestProperty("Authorization", authorization);
                 connection.setRequestProperty("Content-Type", "application/json"); //Setting content type-  JSON
 
@@ -238,21 +251,17 @@ public class AlaviHttp {
                     is = connection.getErrorStream();
                 }
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(
-                        is), 8);
+
+                ByteArrayOutputStream oas = new ByteArrayOutputStream();
                 StringBuilder sb = new StringBuilder();
-                String line = null;
+                copyStream(is, oas);
+                String t = oas.toString();
 
 
-                while ((line = reader.readLine()) != null) {
-
-                    sb.append(line + "\n");
-
-                }
                 is.close();
                 connection.disconnect();
-                String rm = sb.toString();
-                return rm;
+
+                return t;
 
             } catch (Exception e) {
                 Log.d("alavi_log", "doInBackground: " + e.getMessage());
@@ -261,6 +270,20 @@ public class AlaviHttp {
 
 
             return null;
+        }
+
+        private void copyStream(InputStream is, OutputStream os) {
+            final int buffer_size = 1024;
+            try {
+                byte[] bytes = new byte[buffer_size];
+                for (; ; ) {
+                    int count = is.read(bytes, 0, buffer_size);
+                    if (count == -1)
+                        break;
+                    os.write(bytes, 0, count);
+                }
+            } catch (Exception ex) {
+            }
         }
 
         public void startwait() {
