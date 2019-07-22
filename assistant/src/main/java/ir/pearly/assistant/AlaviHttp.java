@@ -1,5 +1,6 @@
 package ir.pearly.assistant;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.widget.ProgressBar;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -389,6 +391,7 @@ public class AlaviHttp {
             }
         }
 
+        @SuppressLint("WrongThread")
         @Override
         protected String doInBackground(String... urls) {
             response = "";
