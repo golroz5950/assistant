@@ -215,6 +215,50 @@ public class AlaviUtill {
         return conect_internet;
     }
 
+    public static boolean ping(String ipOrUrl){
+        ipOrUrl=ipOrUrl.replace("http://","");
+        ipOrUrl=ipOrUrl.replace("https://","");
+        ipOrUrl=ipOrUrl.replace("www.","");
+        ipOrUrl=ipOrUrl.replace("www","");
+
+        List<String> list=null;
+        if(ipOrUrl.contains("/")){
+            list=AlaviUtill.strings.spilit(ipOrUrl,"/");
+            ipOrUrl=list.get(0);
+
+        }
+        if(ipOrUrl.contains(":")){
+            list=AlaviUtill.strings.spilit(ipOrUrl,":");
+            ipOrUrl=list.get(0);
+
+        }
+
+
+        Runtime runtime = Runtime.getRuntime();
+        try
+        {
+            Process  mIpAddrProcess = runtime.exec("/system/bin/ping -c 1 "+ipOrUrl);
+            int mExitValue = mIpAddrProcess.waitFor();
+            System.out.println(" mExitValue "+mExitValue);
+            if(mExitValue==0){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        catch (InterruptedException ignore)
+        {
+            ignore.printStackTrace();
+            System.out.println(" Exception:"+ignore);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            System.out.println(" Exception:"+e);
+        }
+        return false;
+    }
+
     public static void copyToClip(Activity activity, String str){
         ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(str, str);
