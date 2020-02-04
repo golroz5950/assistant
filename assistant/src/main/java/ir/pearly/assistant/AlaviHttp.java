@@ -328,7 +328,6 @@ public class AlaviHttp {
     public static class DownloadFileWithResume extends AsyncTask<String, Integer, String> {
         public Context context;
         public String subname = null, response = "";
-        public ProgressBar progressBar;
         public String filename = "";
         public String dir = "";
         public boolean success;
@@ -338,19 +337,10 @@ public class AlaviHttp {
         boolean wait;
         int downloaded = 0;
         int fileLength = 0;
-
-        public DownloadFileWithResume(Context context, String subname, ProgressBar progressBar, String dir, String filename) {
+        int lentgh=0;
+        public DownloadFileWithResume(Context context, String subname, String dir, String filename) {
             this.context = context;
             this.subname = subname;
-            this.progressBar = progressBar;
-            this.filename = filename;
-            this.dir = dir;
-        }
-
-        public DownloadFileWithResume(ProgressBar progressBar, String dir, String filename) {
-
-            this.subname = "";
-            this.progressBar = progressBar;
             this.filename = filename;
             this.dir = dir;
         }
@@ -369,19 +359,22 @@ public class AlaviHttp {
         @Override
         protected void onProgressUpdate(Integer... progress) {
             super.onProgressUpdate(progress);
-            // if we get here, length is known, now set indeterminate to false
-            if (progressBar != null) {
-                progressBar.setIndeterminate(false);
-                progressBar.setMax(fileLength);
-                int rem = (fileLength - downloaded) / 100;
-                progressBar.setProgress(downloaded + (progress[0] * rem));
-            }
+            int rem = (fileLength - downloaded) / 100;
+
+            if(rem!=0)
+                lentgh=downloaded + (progress[0] * rem);
+            else lentgh=fileLength;
+
+            AlaviUtill.callsub(context,subname+"_onProgressUpdate",0,lentgh,fileLength);
+
+
 
         }
 
         @Override
         protected void onPostExecute(String string) {
             response = string;
+            AlaviUtill.callsub(context,subname+"_onProgressUpdate",0,fileLength,fileLength);
             if (wait) {
                 AlaviUtill.waitstop();
             } else {
@@ -427,12 +420,6 @@ public class AlaviHttp {
 
                 if (fileLength == downloaded) {
                     success = true;
-                    if (progressBar != null) {
-                        progressBar.setIndeterminate(false);
-                        progressBar.setMax(100);
-                        progressBar.setProgress(100);
-                    }
-
                     return null;
                 }
 
@@ -478,11 +465,7 @@ public class AlaviHttp {
                 try {
                     if (output != null)
                         output.close();
-                    if (progressBar != null) {
-                        progressBar.setIndeterminate(false);
-                        progressBar.setMax(100);
-                        progressBar.setProgress(100);
-                    }
+
                     if (input != null)
                         input.close();
                 } catch (IOException ignored) {
